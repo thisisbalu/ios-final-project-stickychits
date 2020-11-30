@@ -29,8 +29,9 @@ class FoldersViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     fileprivate func loadFolders() {
-        if let folders = Folder.mr_findAllSorted(by: "updatedTime", ascending: false) as? [Folder] {
-            print("Folders count \(folders.count)")
+        
+        if let folders = Folder.mr_findAllSorted(by: "updatedTime", ascending: false, with: NSPredicate(format: "active == true")) as? [Folder] {
+//            print("Folders count \(folders.count)")
             allFolders = folders
             foldersTableView.reloadData()
         }
@@ -68,6 +69,7 @@ class FoldersViewController: UIViewController, UITableViewDelegate, UITableViewD
             let folderObj = Folder.mr_createEntity(in: .mr_default())
             
             folderObj?.key = Utils.shared.randomString(type: "fold")
+            folderObj?.active = true
             folderObj?.name = name
             
             folderObj?.createdTime = currentTime
@@ -76,6 +78,16 @@ class FoldersViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             NSManagedObjectContext.mr_default().mr_saveToPersistentStore(completion: nil)
             self.loadFolders()
+        }
+    }
+    
+    func deleteFolder(withKey folderKey: String) {
+        DispatchQueue.main.async {
+            if let folderObj = Folder.mr_findFirst(byAttribute: "key", withValue: folderKey, in: .mr_default()) {
+                folderObj.active = false
+                NSManagedObjectContext.mr_default().mr_saveToPersistentStore(completion: nil)
+                self.loadFolders()
+            }
         }
     }
     
@@ -107,6 +119,27 @@ class FoldersViewController: UIViewController, UITableViewDelegate, UITableViewD
             notesListView.folderName = folderObj.name ?? ""
             self.navigationController?.pushViewController(notesListView, animated: true)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let folderObj = allFolders[indexPath.row]
+        let delete = UITableViewRowAction(style: .normal, title: "Delete", handler: { (_, _) in
+            
+            tableView.setEditing(false, animated: true)
+            
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            alertController.addAction(UIAlertAction(title: "Delete Folder", style: .destructive, handler: {(_) in
+                self.deleteFolder(withKey: folderObj.key ?? "")
+            }))
+            
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: {(_) in
+            }))
+            
+            self.present(alertController, animated: true, completion: nil)
+        })
+        delete.backgroundColor = UIColor.red
+        return [delete]
     }
 }
 

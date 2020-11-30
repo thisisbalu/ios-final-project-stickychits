@@ -17,6 +17,7 @@ extension Folder {
         return NSFetchRequest<Folder>(entityName: "Folder")
     }
 
+    @NSManaged public var active: Bool
     @NSManaged public var createdTime: Int64
     @NSManaged public var key: String
     @NSManaged public var name: String
