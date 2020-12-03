@@ -8,14 +8,16 @@
 
 import UIKit
 
-import MagicalRecord
+import CoreData
 
 class NotesListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NotesViewDelegate {
     
-    var folderId:   String = ""
-    var folderName: String = ""
-    var notesInFolder: [Notes] = []
-    var selectedNoteKey: String = ""
+    var folderId:       String = ""
+    var folderName:     String = ""
+    var notesInFolder:  [Notes] = []
+    var selectedNotes:  Notes?
+    
+    let managedContext = CoreDataHelper().persistentContainer.viewContext
     
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var notesTableView: UITableView!
@@ -38,15 +40,23 @@ class NotesListViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     @IBAction func createNote(_ sender: Any) {
-        selectedNoteKey = ""
-        loadNotesView(notesKey: nil)
+        selectedNotes = nil
+        loadNotesView()
     }
     
     fileprivate func loadAllNotes() {
-        if let notes = Notes.mr_findAllSorted(by: "updatedTime", ascending: false, with: NSPredicate(format: "active == true AND folderID == %@", folderId)) as? [Notes] {
-            //            print("Notes count \(notesInFolder.count)")
-            notesInFolder = notes
-            notesTableView.reloadData()
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Notes")
+        request.predicate = NSPredicate(format: "active == true AND folderID == %@", folderId)
+        let sortDescriptor = NSSortDescriptor(key: "updatedTime", ascending: false)
+        request.sortDescriptors = [sortDescriptor]
+        request.returnsObjectsAsFaults = false
+        do {
+            if let result = try managedContext.fetch(request) as? [Notes] {
+                notesInFolder = result
+                notesTableView.reloadData()
+            }
+        } catch {
+            print("Failed")
         }
     }
     
@@ -54,38 +64,67 @@ class NotesListViewController: UIViewController, UITableViewDataSource, UITableV
         //        print("Notes to be saved \(title) and notes \(message)")
         DispatchQueue.main.async {
             let currentTime = Int64(Date().timeIntervalSince1970)
-            let noteObj = Notes.mr_findFirstOrCreate(byAttribute: "key", withValue: self.selectedNoteKey)
             
-            if self.selectedNoteKey.isEmpty {
+            
+            if self.selectedNotes == nil {
+                // Create Entity
+                
+                guard let notesEntity = NSEntityDescription.entity(forEntityName: "Notes", in: self.managedContext) else {
+                    return
+                }
+                
+                let noteObj = Notes(entity: notesEntity, insertInto: self.managedContext)
+                
+                noteObj.key = Utils.shared.randomString(type: "note")
                 noteObj.createdTime = currentTime
+                noteObj.updatedTime = currentTime
+                
+                noteObj.active = true
+                noteObj.folderID = self.folderId
+                
+                noteObj.title = title
+                noteObj.details = message
+            } else {
+                
+                self.selectedNotes?.updatedTime = currentTime
+                self.selectedNotes?.title = title
+                self.selectedNotes?.details = message
             }
             
-            noteObj.updatedTime = currentTime
-            
-            noteObj.active = true
-            noteObj.folderID = self.folderId
-            noteObj.key = Utils.shared.randomString(type: "note")
-            noteObj.title = title
-            noteObj.details = message
-            
-            NSManagedObjectContext.mr_default().mr_saveToPersistentStore(completion: nil)
-            self.loadAllNotes()
+            self.saveAndReload()
         }
     }
     
     func deleteNotes(withKey notesKey: String) {
         DispatchQueue.main.async {
-            if let notesObj = Notes.mr_findFirst(byAttribute: "key", withValue: notesKey, in: .mr_default()) {
-                notesObj.active = false
-                NSManagedObjectContext.mr_default().mr_saveToPersistentStore(completion: nil)
-                self.loadAllNotes()
+            
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Notes")
+            request.predicate = NSPredicate(format: "key == %@", notesKey)
+            request.returnsObjectsAsFaults = false
+            do {
+                if let notesObj = try self.managedContext.fetch(request).first as? Notes {
+                    notesObj.active = false
+                    self.saveAndReload()
+                }
+            } catch {
+                print("Failed")
             }
         }
     }
     
-    func loadNotesView(notesKey: String?) {
+    func saveAndReload() {
+        do {
+            try self.managedContext.save()
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+        
+        self.loadAllNotes()
+    }
+    
+    func loadNotesView() {
         if let notesView = self.storyboard?.instantiateViewController(withIdentifier: "NotesViewID") as? NotesViewController {
-            if let key = notesKey, let notes = Notes.mr_findFirst(byAttribute: "key", withValue: key) {
+            if let notes = selectedNotes {
                 notesView.chitTitle = notes.title ?? ""
                 notesView.chitMessage = notes.details ?? ""
             }
@@ -124,9 +163,8 @@ class NotesListViewController: UIViewController, UITableViewDataSource, UITableV
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let notes = notesInFolder[indexPath.row]
-        loadNotesView(notesKey: notes.key)
-        selectedNoteKey = notes.key ?? ""
+        selectedNotes = notesInFolder[indexPath.row]
+        loadNotesView()
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {

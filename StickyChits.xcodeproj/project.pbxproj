@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -20,8 +20,6 @@
 		2D7B360B25722DAB002F0109 /* NotesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B360A25722DAB002F0109 /* NotesListViewController.swift */; };
 		2D7B360D2572319F002F0109 /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7B360C2572319F002F0109 /* NotesViewController.swift */; };
 		2DAA54032571569B00D1A88C /* FoldersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DAA54022571569B00D1A88C /* FoldersViewController.swift */; };
-		E5C4A3329829CCD10486E839 /* Pods_StickyChitsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2C10208CDB7D5A7F12F5F10 /* Pods_StickyChitsTests.framework */; };
-		F1B825FA3D201DB1C8F587CF /* Pods_StickyChits.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 883B062A572DB0486848A789 /* Pods_StickyChits.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,12 +54,6 @@
 		2D7B360A25722DAB002F0109 /* NotesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesListViewController.swift; sourceTree = "<group>"; };
 		2D7B360C2572319F002F0109 /* NotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		2DAA54022571569B00D1A88C /* FoldersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersViewController.swift; sourceTree = "<group>"; };
-		883B062A572DB0486848A789 /* Pods_StickyChits.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StickyChits.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		947BB4D424F8612248DD4CBF /* Pods-StickyChitsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyChitsTests.debug.xcconfig"; path = "Target Support Files/Pods-StickyChitsTests/Pods-StickyChitsTests.debug.xcconfig"; sourceTree = "<group>"; };
-		9943D5BFB39A110770B6ACD6 /* Pods-StickyChitsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyChitsTests.release.xcconfig"; path = "Target Support Files/Pods-StickyChitsTests/Pods-StickyChitsTests.release.xcconfig"; sourceTree = "<group>"; };
-		A1A430F40F2650DD8ADCA675 /* Pods-StickyChits.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyChits.debug.xcconfig"; path = "Target Support Files/Pods-StickyChits/Pods-StickyChits.debug.xcconfig"; sourceTree = "<group>"; };
-		A2C10208CDB7D5A7F12F5F10 /* Pods_StickyChitsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StickyChitsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C9E5E719606599B1C183F11E /* Pods-StickyChits.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyChits.release.xcconfig"; path = "Target Support Files/Pods-StickyChits/Pods-StickyChits.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +61,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F1B825FA3D201DB1C8F587CF /* Pods_StickyChits.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,24 +68,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5C4A3329829CCD10486E839 /* Pods_StickyChitsTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		043B13699031B69E6D2949C2 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A1A430F40F2650DD8ADCA675 /* Pods-StickyChits.debug.xcconfig */,
-				C9E5E719606599B1C183F11E /* Pods-StickyChits.release.xcconfig */,
-				947BB4D424F8612248DD4CBF /* Pods-StickyChitsTests.debug.xcconfig */,
-				9943D5BFB39A110770B6ACD6 /* Pods-StickyChitsTests.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		2D31D9D2256D6DE800608942 = {
 			isa = PBXGroup;
 			children = (
@@ -102,8 +81,6 @@
 				2D31D9DD256D6DE800608942 /* StickyChits */,
 				2D31D9F7256D6DEA00608942 /* StickyChitsTests */,
 				2D31D9DC256D6DE800608942 /* Products */,
-				043B13699031B69E6D2949C2 /* Pods */,
-				73F610D4CE0D3C01404A08A6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -172,15 +149,6 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		73F610D4CE0D3C01404A08A6 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				883B062A572DB0486848A789 /* Pods_StickyChits.framework */,
-				A2C10208CDB7D5A7F12F5F10 /* Pods_StickyChitsTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -188,11 +156,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D31D9FD256D6DEA00608942 /* Build configuration list for PBXNativeTarget "StickyChits" */;
 			buildPhases = (
-				36C26EEF7ECC88377F926F2C /* [CP] Check Pods Manifest.lock */,
 				2D31D9D7256D6DE800608942 /* Sources */,
 				2D31D9D8256D6DE800608942 /* Frameworks */,
 				2D31D9D9256D6DE800608942 /* Resources */,
-				DFDC8C0EA080A9663EA7CBEA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -207,7 +173,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D31DA00256D6DEA00608942 /* Build configuration list for PBXNativeTarget "StickyChitsTests" */;
 			buildPhases = (
-				629B2D2AE528BFE65E9DDE62 /* [CP] Check Pods Manifest.lock */,
 				2D31D9F0256D6DEA00608942 /* Sources */,
 				2D31D9F1256D6DEA00608942 /* Frameworks */,
 				2D31D9F2256D6DEA00608942 /* Resources */,
@@ -280,70 +245,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		36C26EEF7ECC88377F926F2C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-StickyChits-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		629B2D2AE528BFE65E9DDE62 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-StickyChitsTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DFDC8C0EA080A9663EA7CBEA /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StickyChits/Pods-StickyChits-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StickyChits/Pods-StickyChits-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StickyChits/Pods-StickyChits-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2D31D9D7256D6DE800608942 /* Sources */ = {
@@ -515,7 +416,6 @@
 		};
 		2D31D9FE256D6DEA00608942 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A1A430F40F2650DD8ADCA675 /* Pods-StickyChits.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -534,7 +434,6 @@
 		};
 		2D31D9FF256D6DEA00608942 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9E5E719606599B1C183F11E /* Pods-StickyChits.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -553,7 +452,6 @@
 		};
 		2D31DA01256D6DEA00608942 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 947BB4D424F8612248DD4CBF /* Pods-StickyChitsTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -576,7 +474,6 @@
 		};
 		2D31DA02256D6DEA00608942 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9943D5BFB39A110770B6ACD6 /* Pods-StickyChitsTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

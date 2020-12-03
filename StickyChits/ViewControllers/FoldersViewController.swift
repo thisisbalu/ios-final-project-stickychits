@@ -8,7 +8,7 @@
 
 import UIKit
 
-import MagicalRecord
+import CoreData
 
 class FoldersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -16,6 +16,8 @@ class FoldersViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var allFolders: [Folder] = []
     var alert: UIAlertController?
+    
+    let managedContext = CoreDataHelper().persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,10 +32,18 @@ class FoldersViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     fileprivate func loadFolders() {
         
-        if let folders = Folder.mr_findAllSorted(by: "updatedTime", ascending: false, with: NSPredicate(format: "active == true")) as? [Folder] {
-//            print("Folders count \(folders.count)")
-            allFolders = folders
-            foldersTableView.reloadData()
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Folder")
+        request.predicate = NSPredicate(format: "active == true")
+        let sortDescriptor = NSSortDescriptor(key: "updatedTime", ascending: false)
+        request.sortDescriptors = [sortDescriptor]
+        request.returnsObjectsAsFaults = false
+        do {
+            if let result = try managedContext.fetch(request) as? [Folder] {
+                allFolders = result
+                foldersTableView.reloadData()
+            }
+        } catch {
+            print("Failed")
         }
     }
     
@@ -64,31 +74,53 @@ class FoldersViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func saveFolder(with name: String) {
         DispatchQueue.main.async {
-            //        print(" saveFolder Value in database \(name)")
+//            print(" saveFolder Value in database \(name)")
+            
+            // Create Entity
+            guard let folderEntity = NSEntityDescription.entity(forEntityName: "Folder", in: self.managedContext) else {
+                return
+            }
+            
+            let folderObj = Folder(entity: folderEntity, insertInto: self.managedContext)
+            
             let currentTime = Int64(Date().timeIntervalSince1970)
-            let folderObj = Folder.mr_createEntity(in: .mr_default())
             
-            folderObj?.key = Utils.shared.randomString(type: "fold")
-            folderObj?.active = true
-            folderObj?.name = name
+            folderObj.key = Utils.shared.randomString(type: "fold")
+            folderObj.active = true
+            folderObj.name = name
             
-            folderObj?.createdTime = currentTime
-            folderObj?.updatedTime = currentTime
-            folderObj?.notesIds = ""
+            folderObj.createdTime = currentTime
+            folderObj.updatedTime = currentTime
+            folderObj.notesIds = ""
             
-            NSManagedObjectContext.mr_default().mr_saveToPersistentStore(completion: nil)
-            self.loadFolders()
+            self.saveAndReload()
         }
     }
     
     func deleteFolder(withKey folderKey: String) {
         DispatchQueue.main.async {
-            if let folderObj = Folder.mr_findFirst(byAttribute: "key", withValue: folderKey, in: .mr_default()) {
-                folderObj.active = false
-                NSManagedObjectContext.mr_default().mr_saveToPersistentStore(completion: nil)
-                self.loadFolders()
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Folder")
+            request.predicate = NSPredicate(format: "key == %@", folderKey)
+            request.returnsObjectsAsFaults = false
+            do {
+                if let folderObj = try self.managedContext.fetch(request).first as? Folder {
+                    folderObj.active = false
+                    self.saveAndReload()
+                }
+            } catch {
+                print("Failed")
             }
         }
+    }
+    
+    func saveAndReload() {
+        do {
+            try self.managedContext.save()
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+        
+        self.loadFolders()
     }
     
     // MARK: TableView Delegates
